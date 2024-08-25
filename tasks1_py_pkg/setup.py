@@ -20,6 +20,7 @@ setup(
     tests_require=['pytest'],
     entry_points={
         'console_scripts': [
+            "str_read = tasks1_py_pkg.terminal_str_read:main"
         ],
     },
 )
