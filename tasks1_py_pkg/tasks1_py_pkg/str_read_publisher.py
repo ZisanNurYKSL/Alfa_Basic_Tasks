@@ -5,7 +5,6 @@ import rclpy
 from rclpy.node import Node #rclpy içinden Node metodunu çağırmak
 from example_interfaces.msg import String
 
-
 class StrReadPublisher(Node):# 1 #Node'u buraya girdiğimde aslında bu class gerçekleştirilebilir hale geliyor.
     def __init__(self):
         super().__init__("str_read_publisher") #2
