@@ -20,7 +20,8 @@ setup(
     tests_require=['pytest'],
     entry_points={
         'console_scripts': [
-            "str_read = tasks1_py_pkg.str_read_publisher:main"
+            "str_read = tasks1_py_pkg.str_read_publisher:main",
+            "str_hear = tasks1_py_pkg.str_hear_subscriber:main"
         ],
     },
 )
