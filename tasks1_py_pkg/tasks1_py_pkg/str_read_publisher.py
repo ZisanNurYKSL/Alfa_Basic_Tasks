@@ -18,8 +18,8 @@ class StrReadPublisher(Node):# 1 #Node'u buraya girdiğimde aslında bu class ge
 
     def publisher_str_read(self):
         msg = String()
-        input = input("Lütfen Sring Giriniz:")
-        msg.data = input
+        input_user = input("Lütfen String Giriniz:")
+        msg.data = input_user
         self.publisher_.publish(msg)
 
 
