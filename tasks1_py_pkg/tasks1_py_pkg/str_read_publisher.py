@@ -3,7 +3,7 @@
 # 1. Library
 import rclpy
 from rclpy.node import Node #rclpy içinden Node metodunu çağırmak
-from example_interfaces.msg import String
+from std_msgs.msg import String
 
 class StrReadPublisher(Node):# 1 #Node'u buraya girdiğimde aslında bu class gerçekleştirilebilir hale geliyor.
     def __init__(self):
@@ -11,9 +11,10 @@ class StrReadPublisher(Node):# 1 #Node'u buraya girdiğimde aslında bu class ge
 
         self.publisher_ = self.create_publisher(String, "/terminal_str", 10 )
         
-        self.timer = self.create_timer(1, self.publisher_str_read)
+        timer_period = 0.5
+        self.timer = self.create_timer(timer_period, self.publisher_str_read)
+        self.i = 0 #sayac
         
-        self.get_logger().info("Starting string reading from terminal")
 
 
     def publisher_str_read(self):
@@ -28,6 +29,7 @@ def main(args=None):
     rclpy.init(args=args) #bir metodu başlatmak için yapmam gereken şey
     node = StrReadPublisher() # 3 #node'u oluşturmak için
     rclpy.spin(node)#bu düğümün yaşam döngüsünü başlatırım
+    node.destroy_node() #BUNU NEDEN YAPTIM
     rclpy.shutdown() # ben düğümü kapattığımda veya durdurduğumda shutdown'a gelecek ve düğümü yok edecek
 
 
