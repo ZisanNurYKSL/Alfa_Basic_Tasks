@@ -21,7 +21,14 @@ setup(
     entry_points={
         'console_scripts': [
             "talker = tasks1_py_pkg.str_read_publisher:main",
-            "listener = tasks1_py_pkg.str_hear_subscriber:main"
+            "listener = tasks1_py_pkg.str_hear_subscriber:main",
+            "char_to_string_server = tasks1_py_pkg.char_to_string_server:main",
+            "char_to_string_client = tasks1_py_pkg.char_to_string_client:main",
+            "weather_forecast_sub = tasks1_py_pkg.weather_forecast_sub:main",
+            "weather_forecast_pub = tasks1_py_pkg.weather_forecast_pub:main"
+
+
+
         ],
     },
 )
