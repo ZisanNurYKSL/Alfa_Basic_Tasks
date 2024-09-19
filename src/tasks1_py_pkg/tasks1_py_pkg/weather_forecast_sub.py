@@ -7,7 +7,7 @@ import time
 
 class WeatherForecastSubscriber(Node):
     def __init__(self):
-        super().__init__("weather_forecast_sub")
+        super().__init__("weather_sub")
 
         self.subscriber_ = self.create_subscription(WeatherForecast, "/weather_data", self.callback_weather_forecast_read, 10)
 
