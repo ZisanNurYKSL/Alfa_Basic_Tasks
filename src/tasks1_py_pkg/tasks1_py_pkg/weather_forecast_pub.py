@@ -7,8 +7,8 @@ import time
 
 class WeatherForecastPublisher(Node):
     def __init__(self):
-        super().__init__('weather_publisher')
-        self.publisher_ = self.create_publisher(WeatherForecast, 'weather_data', 10)
+        super().__init__("weather_publisher")
+        self.publisher_ = self.create_publisher(WeatherForecast, "/weather_data", 10)
         self.timer = self.create_timer(5.0, self.publish_weather_data)
 
     def publish_weather_data(self):
