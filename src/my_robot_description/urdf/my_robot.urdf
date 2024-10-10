@@ -18,7 +18,7 @@
 
     <xacro:property name = "caster_wheel_radius" value = "0.05" />
 
-    <xacro:macro name = "wheel_link" params = "prefix" >
+   <xacro:macro name = "wheel_link" params = "prefix" >
         <link name = "${prefix}_wheel_link"><!--bunu aşağıda çağıracağım-->
             <visual>
                 <geometry>
@@ -30,8 +30,8 @@
         </link>
     </xacro:macro>
 
-     <xacro:macro name = "caster_wheel_link" params = "prefix" >
-        <link name = "{prefix}_caster_wheel_link" >  <!--bunu aşağıda çağıracağım-->
+    <xacro:macro name = "caster_wheel_link" params = "prefix" >
+        <link name = "${prefix}_caster_wheel_link" >  <!--bunu aşağıda çağıracağım-->
             <visual>
                 <geometry>
                     <sphere radius = "${caster_wheel_radius}" />  
@@ -42,6 +42,7 @@
         </link>
     </xacro:macro>
 
+    <link name = "base_footprint" /> <!--robotu zemindne bir miktar yukarıda tutmak için kullanırım-->
 
     <link name = "base_link" >
         <visual>
@@ -61,6 +62,12 @@
     <xacro:caster_wheel_link prefix = "pre_left" />
     <xacro:caster_wheel_link prefix = "back_right" />
     <xacro:caster_wheel_link prefix = "back_left" />
+
+    <joint name = "base_joint" type = "fixed">
+        <parent link = "base_footprint" />
+        <child link = "base_link" />
+        <origin xyz = "0 0 ${(base_height / 2) + wheel_radius}" rpy = "0 0 0" />  
+    </joint>
 
     <joint name = "base_right_wheel_joint" type = "continuous">
         <parent link = "base_link" />
@@ -139,4 +146,5 @@
         <axis xyz = "0 1 0"/>   <!--tekerleğimin istediğim yönde dönmesi için y ekseni etrafında dönmesine izin vermeliyim.
         continuous tipi eklem kullanıyorsam onun döneceği ekseni tanımlamam gerekiyordu. -->
     </joint>
+
 </robot>
