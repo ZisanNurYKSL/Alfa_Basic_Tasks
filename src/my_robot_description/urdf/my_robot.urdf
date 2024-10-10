@@ -18,6 +18,29 @@
 
     <xacro:property name = "caster_wheel_radius" value = "0.05" />
 
+    <xacro:macro name = "wheel_link" params = "prefix" >
+        <link name = "${prefix}_wheel_link"><!--bunu aşağıda çağıracağım-->
+            <visual>
+                <geometry>
+                    <cylinder radius = "${wheel_radius}" length = "${wheel_length}"/>
+                </geometry>
+                <origin xyz = "0 0 0 " rpy = "${pi/2} 0 0" /> <!--bu şekilde bir gösterim ile tekerimi 90 derece döndürmeyi sağlarım-->
+                <material name = "black" />
+            </visual>
+        </link>
+    </xacro:macro>
+
+     <xacro:macro name = "caster_wheel_link" params = "prefix" >
+        <link name = "{prefix}_caster_wheel_link" >  <!--bunu aşağıda çağıracağım-->
+            <visual>
+                <geometry>
+                    <sphere radius = "${caster_wheel_radius}" />  
+                </geometry>
+                <origin xyz = "0 0 0 " rpy = "0 0 0" />
+                <material name = "black" />
+            </visual>
+        </link>
+    </xacro:macro>
 
 
     <link name = "base_link" >
@@ -30,67 +53,14 @@
         </visual>
     </link>
 
-    <link name = "right_wheel_link">
-        <visual>
-            <geometry>
-                <cylinder radius = "${wheel_radius}" length = "${wheel_length}"/>
-            </geometry>
-            <origin xyz = "0 0 0 " rpy = "${pi/2} 0 0" /> <!--bu şekilde bir gösterim ile tekerimi 90 derece döndürmeyi sağlarım-->
-            <material name = "black" />
-        </visual>
-    </link>
+    <!--prefix'i aşağıdaki satırlar ile çağırıyorum-->
+    <xacro:wheel_link prefix = "right" />
+    <xacro:wheel_link prefix = "left" />
 
-    <link name = "left_wheel_link">
-        <visual>
-            <geometry>
-                <cylinder radius = "${wheel_radius}" length = "${wheel_length}"/>
-            </geometry>
-            <origin xyz = "0 0 0 " rpy = "${pi/2} 0 0" /> <!--bu şekilde bir gösterim ile tekerimi 90 derece döndürmeyi sağlarım-->
-            <material name = "black" />
-        </visual>
-    </link>
-
-    <link name = "pre_right_caster_wheel_link" >
-      <visual>
-            <geometry>
-                <sphere radius = "${caster_wheel_radius}" />  
-            </geometry>
-            <origin xyz = "0 0 0 " rpy = "0 0 0" />
-            <material name = "black" />
-        </visual>
-    </link>
-
-    <link name = "pre_left_caster_wheel_link" >
-      <visual>
-            <geometry>
-                <sphere radius = "${caster_wheel_radius}" />  
-            </geometry>
-            <origin xyz = "0 0 0 " rpy = "0 0 0" />
-            <material name = "black" />
-        </visual>
-    </link>
-
-    <link name = "back_right_caster_wheel_link" >
-      <visual>
-            <geometry>
-                <sphere radius = "${caster_wheel_radius}" />  
-            </geometry>
-            <origin xyz = "0 0 0 " rpy = "0 0 0" />
-            <material name = "black" />
-        </visual>
-    </link>
-
-    <link name = "back_left_caster_wheel_link" >
-      <visual>
-            <geometry>
-                <sphere radius = "${caster_wheel_radius}" />  
-            </geometry>
-            <origin xyz = "0 0 0 " rpy = "0 0 0" />
-            <material name = "black" />
-        </visual>
-    </link>
-
- 
+    <xacro:caster_wheel_link prefix = "pre_right" />
+    <xacro:caster_wheel_link prefix = "pre_left" />
+    <xacro:caster_wheel_link prefix = "back_right" />
+    <xacro:caster_wheel_link prefix = "back_left" />
 
     <joint name = "base_right_wheel_joint" type = "continuous">
         <parent link = "base_link" />
