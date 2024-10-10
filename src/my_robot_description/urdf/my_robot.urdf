@@ -1,5 +1,18 @@
 <?xml version = "1.0"?>
-<robot name="my_robot" xmlns:xacro="http://www.ros.org/wiki/xacro"> <!--basit bir urdf dosyasında tanımlama gerçekleştiremiyorum bunun için xmlns'i de eklemeliyim-->
+<robot name="my_robot"  xmlns:xacro="http://www.ros.org/wiki/xacro"> <!--basit bir urdf dosyasında tanımlama gerçekleştiremiyorum bunun için xmlns'i de eklemeliyim-->
+    
+    <material name = "cyan">
+        <color rgba = "0 1 1 1" />
+    </material>
 
+    <link name = "base_link" >
+        <visual>
+            <geometry>
+                <box size = "0.6 0.4 0.2" />  <!--with, length, heigt--> 
+            </geometry>
+            <origin xyz = "0 0 0" rpy = "0 0 0" />
+            <material name = "cyan"/>
+        </visual>
+    </link>
 
 </robot>
