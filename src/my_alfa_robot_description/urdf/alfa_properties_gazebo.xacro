@@ -1,0 +1,139 @@
+<?xml version="1.0"?>
+<robot name="my_robot" xmlns:xacro="http://ros.org/wiki/xacro">
+
+    <!-- Gövde ve tekerlekler için materyal tanımları -->
+    <gazebo reference="base_link">
+        <material>Gazebo/Blue</material>
+    </gazebo>
+
+    <gazebo reference="right_wheel_link">
+        <material>Gazebo/Black</material>
+    </gazebo>
+
+    <gazebo reference="left_wheel_link">
+        <material>Gazebo/Black</material>
+    </gazebo>
+
+    <!-- Sürtünme değerlerinin tanımlandığı tekerlekler -->
+    <gazebo reference="pre_right_caster_wheel_link">
+        <material>Gazebo/Black</material>
+        <mu1>0.1</mu1>
+        <mu2>0.1</mu2>
+    </gazebo>
+
+    <gazebo reference="pre_left_caster_wheel_link">
+        <material>Gazebo/Black</material>
+        <mu1>0.1</mu1>
+        <mu2>0.1</mu2>
+    </gazebo>
+
+    <gazebo reference="back_right_caster_wheel_link">
+        <material>Gazebo/Black</material>
+        <mu1>0.1</mu1>
+        <mu2>0.1</mu2>
+    </gazebo>
+
+    <gazebo reference="back_left_caster_wheel_link">
+        <material>Gazebo/Black</material>
+        <mu1>0.1</mu1>
+        <mu2>0.1</mu2>
+    </gazebo>
+
+    <!-- Differential Drive Plugin -->
+    <gazebo>
+        <plugin name="diff_drive_controller" filename="libgazebo_ros_diff_drive.so">
+            <!-- Güncel hız kontrol oranı (Hz) -->
+            <update_rate>50</update_rate>
+
+            <!-- Tekerlek birleşim noktaları -->
+            <left_joint>base_left_wheel_joint</left_joint>
+            <right_joint>base_right_wheel_joint</right_joint>
+            
+            <!-- Kinematik ayarlar -->
+            <wheel_separation>0.45</wheel_separation> <!-- Tekerlekler arası mesafe -->
+            <wheel_radius>0.1</wheel_radius> <!-- Yarıçap, çap değil. wheel_radius güncel parametredir -->
+
+            <!-- Odometre ve frame yayınlama ayarları -->
+            <publish_odom>true</publish_odom>
+            <publish_odom_tf>true</publish_odom_tf>
+            <publish_wheel_tf>true</publish_wheel_tf>
+
+            <odometry_topic>odom</odometry_topic>
+            <odometry_frame>odom</odometry_frame>
+            <robot_base_frame>base_footprint</robot_base_frame>
+        </plugin>
+    </gazebo>
+</robot>
+
+
+<!--?xml version = "1.0"?>
+<robot name="my_robot" xmlns:xacro="http://www.ros.org/wiki/xacro"> basit bir urdf dosyasında tanımlama gerçekleştiremiyorum bunun için xmlns'i de eklemeliyim
+ 
+    <gazebo reference = "base_link">
+        <material>Gazebo/Blue</material>
+    </gazebo>   
+
+    <gazebo reference = "right_wheel_link">
+        <material>Gazebo/Black</material>
+    </gazebo> 
+
+    <gazebo reference = "left_wheel_link">
+        <material>Gazebo/Black</material>
+    </gazebo>    
+
+    <gazebo reference = "pre_right_caster_wheel_link"> <caster_wheel'de sürtünme oluyor. bunu azaltmak için mu1 ve mu2 şeklinde sürütnme değerleri tanımladım
+        <material>Gazebo/Black</material>
+        <mu1 value = "0.1" /> <bunlar birer sürtünme katsayısıdır.>
+        <mu2 value = "0.1" />
+    </gazebo>    
+
+    <gazebo reference = "pre_left_caster_wheel_link"> <caster_wheel'de sürtünme oluyor. bunu azaltmak için mu1 ve mu2 şeklinde sürütnme değerleri tanımladım>
+        <material>Gazebo/Black</material>
+        <mu1 value = "0.1" /> <bunlar birer sürtünme katsayısıdır.>
+        <mu2 value = "0.1" />
+    </gazebo>  
+
+    <gazebo reference = "back_right_caster_wheel_link"> <caster_wheel'de sürtünme oluyor. bunu azaltmak için mu1 ve mu2 şeklinde sürütnme değerleri tanımladım>
+        <material>Gazebo/Black</material>
+        <mu1 value = "0.1" /> <bunlar birer sürtünme katsayısıdır. >
+        <mu2 value = "0.1" />
+    </gazebo>  
+
+    <gazebo reference = "back_left_caster_wheel_link"> <caster_wheel'de sürtünme oluyor. bunu azaltmak için mu1 ve mu2 şeklinde sürütnme değerleri tanımladım>
+        <material>Gazebo/Black</material>
+        <mu1 value = "0.1" /> <bunlar birer sürtünme katsayısıdır. >
+        <mu2 value = "0.1" />
+    </gazebo>     
+
+<Aşağıdaki kod satırlarıyla ilgili control plugin'ini yazarak tekerlerdeki bug'I çözmüş oldum:>
+    <gazebo>
+        <plugin name="diff_drive_controller" filename="libgazebo_ros_diff_drive.so">
+
+        < Update rate in Hz 
+        <update_rate>50</update_rate>
+
+        < wheels 
+        <left_joint>base_left_wheel_joint</left_joint>
+        <right_joint>base_right_wheel_joint</right_joint>
+        <right_joint>base_pre_right_caster_wheel_joint</right_joint>
+        <right_joint>base_pre_left_caster_wheel_joint</right_joint>
+        <right_joint>base_back_right_caster_wheel_joint</right_joint>
+        <right_joint>base_back_left_caster_wheel_joint</right_joint>
+
+
+        < kinematics --> <!--araçların tekerlekleri arasındaki mesafe hesaplanıp tanımlanıyor>
+        <wheel_separation>0.45</wheel_separation>
+        <wheel_diameter>0.2</wheel_diameter> <BURASI SIKINTIII!!! HESAPLAA>
+
+        <output 
+        <publish_odom>true</publish_odom>
+        <publish_odom_tf>true</publish_odom_tf>
+        <publish_wheel_tf>true</publish_wheel_tf>
+
+        <odometry_topic>odom</odometry_topic>
+        <odometry_frame>odom</odometry_frame>
+        <robot_base_frame>base_footprint</robot_base_frame>
+
+        </plugin>
+    </gazebo>
+</robot-->
