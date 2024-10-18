@@ -9,7 +9,7 @@ endif()
 find_package(ament_cmake REQUIRED)
 
 install(
-  DIRECTORY launch rviz #rviz'i de vermem gerekiyor ki bu da paket içinde yğklensin diye
+  DIRECTORY launch rviz worlds #rviz'i de vermem gerekiyor ki bu da paket içinde yğklensin diye
   DESTINATION share/${PROJECT_NAME}/ # DESTİNATİON DENİLEN ADRES ASLINDA BİZİM PROJEMİZİN GENEL ADRESİNİ İFADE EDİYOR
 )
 
