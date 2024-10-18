@@ -1,0 +1,34 @@
+<?xml version="1.0"?>
+<robot name="my_robot" xmlns:xacro="http://ros.org/wiki/xacro">
+
+ <!-- Kamera boyutları için xacro değişkenleri -->
+    <xacro:property name="camera_width" value="0.1"/>
+    <xacro:property name="camera_length" value="0.01"/>
+    <xacro:property name="camera_height" value="0.05"/>
+
+    <link name = "camera_link" >
+        <visual>
+            <geometry>
+                <box size = "${camera_length} ${camera_length} ${camera_height}" />  <!--with, length, heigt--> 
+            </geometry>
+            <origin xyz = "0 0 0" rpy = "0 0 0" />
+            <material name = "Gazebo/Grey"/>
+        </visual>
+
+        <collision>
+            <geometry>
+                <box size = "${camera_length} ${camera_length} ${camera_height}" />  <!--with, length, heigt--> 
+            </geometry>
+            <origin xyz = "0 0 0" rpy = "0 0 0" />
+        </collision>
+
+        <xacro:box_inertia m = "5.0" l = "${2*base_length}" 
+                                     w = "${2*base_width}" 
+                                     h = "${2*base_height}" 
+                                     xyz = "0 0 0"
+                                     rpy = "0 0 0" /> <!--xyz konumu ifade ederken rpy oryantasyonu ifade ediyor.-->
+                                     <!--bu değerleri bir miktar arttırdığımızda eylemsizlik momenti artacağı için daha stabil bir durum
+                                     elde etmiş olurum. 2* genişleterek bu durumu düzeltemiş olurum.-->
+    </link>
+
+</robot>
