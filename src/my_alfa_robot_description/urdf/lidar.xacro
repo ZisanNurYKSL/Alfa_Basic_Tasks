@@ -2,70 +2,67 @@
 <robot name="my_robot" xmlns:xacro="http://ros.org/wiki/xacro">
 
  <!-- Kamera boyutları için xacro değişkenleri -->
-    <xacro:property name="camera_width" value="0.1"/>
-    <xacro:property name="camera_length" value="0.01"/>
-    <xacro:property name="camera_height" value="0.05"/>
+    <xacro:property name="lidar_radius" value="0.08"/>
+    <xacro:property name="lidar_length" value="0.05"/>
+    <!-- <xacro:property name="camera_height" value="0.05"/> -->
 
-    <link name = "camera_link" >
+    <link name = "lidar_link">
         <visual>
             <geometry>
-                <box size = "${camera_length} ${camera_length} ${camera_height}" />  <!--with, length, heigt--> 
+                <cylinder radius = "${lidar_radius}" length = "${lidar_length}"/>
             </geometry>
-            <origin xyz = "0 0 0" rpy = "0 0 0" />
-            <material name = "Gazebo/Grey"/>
+            <origin xyz = "0 0 0 " rpy = "0 0 0" /> <!--bu şekilde bir gösterim ile tekerimi 90 derece döndürmeyi sağlarım-->
+            <material name = "grey" />
         </visual>
 
         <collision>
             <geometry>
-                <box size = "${camera_length} ${camera_length} ${camera_height}" />  <!--with, length, heigt--> 
+                <cylinder radius = "${lidar_radius}" length = "${lidar_length}"/>
             </geometry>
-            <origin xyz = "0 0 0" rpy = "0 0 0" />
+            <origin xyz = "0 0 0 " rpy = "0 0 0" /> <!--bu şekilde bir gösterim ile tekerimi 90 derece döndürmeyi sağlarım-->
         </collision>
 
-        <xacro:box_inertia m = "5.0" l = "${2*base_length}" 
-                                     w = "${2*base_width}" 
-                                     h = "${2*base_height}" 
-                                     xyz = "0 0 0"
-                                     rpy = "0 0 0" /> <!--xyz konumu ifade ederken rpy oryantasyonu ifade ediyor.-->
-                                     <!--bu değerleri bir miktar arttırdığımızda eylemsizlik momenti artacağı için daha stabil bir durum
-                                     elde etmiş olurum. 2* genişleterek bu durumu düzeltemiş olurum.-->
-    </link>
+        <xacro:cylinder_inertia m = "0.2" r = "${2*lidar_radius}" 
+                                          h = "${2*lidar_length}" 
+                                          xyz = "0 0 0"
+                                          rpy = "0 0 0" />
+                                              <!--burada da 2* ile genişeltmeler yaparak eylemsilik momentini arttırıp daha stabil bir 
+                                              durum elde etmiş olurum-->
+        </link>
 
        <!-- Kamera ve base_link arasında sabit bağlantı (joint) -->
-    <joint name="base_camera_joint" type="fixed">
+    <joint name="base_lidar_joint" type="fixed">
         <parent link="base_link"/>
-        <child link="camera_link"/>
-        <origin xyz="0.3 0 0" rpy="0 0 0"/>
+        <child link="lidar_link"/>
+        <origin xyz="0 0 ${(base_height / 2) + (lidar_length / 2)}" rpy="0 0 0"/> <!--lidar'ı robotun biraz üzerine yerleştirebilmke için gerekir-->
     </joint>
 
      <!-- Gazebo kamera sensörü -->
-    <gazebo reference="camera_link">
-        <sensor name="camera_sensor" type="camera">
+    <gazebo reference="lidar_link">
+        <sensor name="lidar_sensor" type="ray">
             <pose>0 0 0 0 0 0</pose>
             <visualize>true</visualize>
             <update_rate>30.0</update_rate>  <!-- Kamera FPS oranı -->
-            <camera>
-                <horizontal_fov>1.047</horizontal_fov> <!-- Görüş açısı -->
-                <image>
-                    <width>640</width>  <!-- Çözünürlük genişliği -->
-                    <height>480</height> <!-- Çözünürlük yüksekliği -->
-                    <format>R8G8B8</format> <!-- Görüntü formatı -->
-                </image>
-                <clip>
-                    <near>0.1</near>  <!-- Minimum görüş mesafesi -->
-                    <far>100</far>    <!-- Maksimum görüş mesafesi -->
-                </clip>
-            </camera>
+            
+            <ray>
+                <scan>
+                    <horizontal>
+                        <samples>720</samples> <!--etraftaki yani toplam 360 dereceden toplam 720 adet nokta alıyor-->
+                        <resolution>1</resolution>
+                        <min_angle>-3.14</min_angle> <!--taradığı alanı ifade eder ve bu 360 derece dönen 2 boyutlu bir lidarın özelliğidr.-->
+                        <max_angle>3.14</max_angle> <!--taradığı alanı ifade eder ve bu 360 derece dönen 2 boyutlu bir lidarın özelliğidr-->
+                    </horizontal>
+                </scan>
+                <range> <!--lidar'ın; min, max ve çözünürlüğünü girdiğim değerleri range etiketi arsında yazarım. .-->
+                    <min>0.1</min>
+                    <max>30.0</max>
+                    <resolution>0.01</resolution>
+                </range>
+            </ray>
 
             <!-- ROS ile kamera verilerini yayınlamak için plugin -->
-            <plugin name="camera_controller" filename="libgazebo_ros_camera.so">
-                <always_on>true</always_on>
-                <update_rate>30.0</update_rate>
-                <camera_name>camera_sensor</camera_name>
-                <image_topic_name>/camera/image_raw</image_topic_name> <!-- ROS topic ismi -->
-                <camera_info_topic_name>/camera/camera_info</camera_info_topic_name>
-                <frame_name>camera_link</frame_name>
-                <hack_baseline>0.07</hack_baseline>
+            <plugin name="lidar_controller" filename="libgazebo_ros_ray_sensor.so">
+                <output_type>sensor_msgs/LaserScan</output_type> <!--lidar veya lazer sensor_msgs/LaserScan ile haberleşir. -->
             </plugin>
         </sensor>
     </gazebo>
