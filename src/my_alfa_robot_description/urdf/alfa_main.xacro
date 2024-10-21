@@ -1,11 +1,16 @@
-<?xml version = "1.0"?>
+<?xml version="1.0"?>
 <robot name="my_robot" xmlns:xacro="http://www.ros.org/wiki/xacro"> <!--basit bir urdf dosyasında tanımlama gerçekleştiremiyorum bunun için xmlns'i de eklemeliyim-->
 
 <!--aşağıdaki komut satırları aslında python'daki kütüphane eklemesi olarak bilinir-->
     <xacro:include filename = "alfa_properties.xacro" /> <!--önce macrolarımı çağırıp-->
+
+    <xacro:include filename = "my_robot.xacro" />  <!--ardından öy_robto'u çağırıyorum-->
     
     <xacro:include filename = "alfa_properties_gazebo.xacro" />
 
-    <xacro:include filename = "my_robot.xacro" />  <!--ardından öy_robto'u çağırıyorum-->
+
+    <xacro:include filename = "camera.xacro" />
+
+    <!-- <xacro:include filename = "lidar.xacro" /> -->
 
 </robot>
